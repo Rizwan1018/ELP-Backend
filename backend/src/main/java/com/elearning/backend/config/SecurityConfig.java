@@ -31,14 +31,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/signup").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/courses/instructor/**").hasRole("INSTRUCTOR")
-                        .requestMatchers("/api/courses/**").hasAnyRole("INSTRUCTOR", "STUDENT")
-
-                        .requestMatchers("/api/courses/students/**").hasRole("STUDENT")
-                        .requestMatchers("/api/test/student").hasRole("STUDENT")
                         .requestMatchers("/api/test/instructor").hasRole("INSTRUCTOR")
-                        .requestMatchers("/api/enrollments/**").hasRole("STUDENT")
+
+                        .requestMatchers("/api/courses/students/**", "/api/enrollments/**").hasRole("STUDENT")
+                        .requestMatchers("/api/test/student").hasRole("STUDENT")
+
+                        .requestMatchers("/api/courses/**").hasAnyRole("INSTRUCTOR", "STUDENT")
                         .anyRequest().authenticated()
 
                 )
