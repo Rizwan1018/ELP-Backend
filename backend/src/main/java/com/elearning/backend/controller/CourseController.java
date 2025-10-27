@@ -4,9 +4,12 @@ package com.elearning.backend.controller;
 import com.elearning.backend.dto.CourseDTO;
 import com.elearning.backend.model.Instructor;
 import com.elearning.backend.service.CourseService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.awt.*;
 import java.util.List;
 
 
@@ -23,6 +26,24 @@ public class CourseController {
         this.courseService = courseService;
     }
 
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public CourseDTO addCourse(
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam("domain") String domain,
+            @RequestParam("level") String level,
+            @RequestParam("durationHrs") Integer durationHrs,
+            @RequestParam("tags") String tags,
+            @RequestParam("instructorId") Long instructorId,
+            @RequestParam(value = "thumbnail", required = false)MultipartFile thumbnail,
+            @RequestParam(value = "video", required = false)MultipartFile video,
+            @RequestParam(value = "prerequisite", required = false)MultipartFile prerequisite ) throws Exception {
+        return courseService.saveCourse(title, description, domain, level,durationHrs, tags, instructorId, thumbnail, video, prerequisite);
+    }
+
+
+
     @GetMapping
     public List<CourseDTO> getCourses(@RequestParam(required = false) Long instructorId) {
         if (instructorId != null) {
@@ -36,10 +57,7 @@ public class CourseController {
         return courseService.getCoursesByInstructorId(instructorId);
     }
 
-    @PostMapping
-    public CourseDTO addCourse(@RequestBody CourseDTO courseDTO) {
-        return courseService.saveCourse(courseDTO);
-    }
+
 
     @GetMapping("/{id}")
     public CourseDTO getCourseById(@PathVariable Long id) {

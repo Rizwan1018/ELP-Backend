@@ -31,5 +31,7 @@ public class Course {
     private String thumbnail;
     private String videoUrl;
 
+    private String preRequisite;
+
 
 }

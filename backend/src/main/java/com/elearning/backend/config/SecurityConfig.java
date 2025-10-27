@@ -3,6 +3,7 @@ package com.elearning.backend.config;
 import com.elearning.backend.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -31,15 +32,21 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/signup").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/uploads/**").permitAll()
+
                         .requestMatchers("/api/courses/instructor/**").hasRole("INSTRUCTOR")
                         .requestMatchers("/api/test/instructor").hasRole("INSTRUCTOR")
+                        .requestMatchers("/api/instructors/**").hasRole("INSTRUCTOR")
+                        .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 
                         .requestMatchers("/api/courses/students/**", "/api/enrollments/**").hasRole("STUDENT")
                         .requestMatchers("/api/test/student").hasRole("STUDENT")
 
-                        .requestMatchers("/api/courses/**").hasAnyRole("INSTRUCTOR", "STUDENT")
+                   //     .requestMatchers("/api/courses/**").hasAnyRole("INSTRUCTOR")
+
+                        .requestMatchers("/api/courses/**").permitAll()
+                    //    .requestMatchers("/api/courses/**").hasAnyRole("INSTRUCTOR", "STUDENT")
                         .anyRequest().authenticated()
 
                 )
@@ -54,6 +61,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:4200"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(List.of("*"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
 

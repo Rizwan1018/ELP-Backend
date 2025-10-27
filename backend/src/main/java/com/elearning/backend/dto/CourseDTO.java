@@ -14,4 +14,5 @@ public class CourseDTO {
     private String description;
     private String thumbnail;
     private String videoUrl;
+    private String preRequisite;
 }
