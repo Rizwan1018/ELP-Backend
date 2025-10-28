@@ -45,19 +45,19 @@ public class CourseController {
 
 
     @GetMapping
-    public List<CourseDTO> getCourses(@RequestParam(required = false) Long instructorId) {
+    public List<CourseDTO> getCourses(
+            @RequestParam(required = false) Long instructorId,
+            @RequestParam(required = false) Long studentId) {
         if (instructorId != null) {
             return courseService.getCoursesByInstructorId(instructorId);
         }
-        return courseService.getAllCourses();
+        return courseService.getAllCourses(studentId);
     }
 
     @GetMapping("/instructor/{instructorId}")
     public List<CourseDTO> getCourseByInstructorId(@PathVariable Long instructorId){
         return courseService.getCoursesByInstructorId(instructorId);
     }
-
-
 
     @GetMapping("/{id}")
     public CourseDTO getCourseById(@PathVariable Long id) {

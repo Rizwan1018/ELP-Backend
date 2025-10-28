@@ -1,6 +1,7 @@
 package com.elearning.backend.config;
 
 import com.elearning.backend.security.JwtAuthenticationFilter;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -32,8 +33,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/signup").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers("/images/**","/css/**","/js/**","/uploads/**").permitAll()
 
                         .requestMatchers("/api/courses/instructor/**").hasRole("INSTRUCTOR")
                         .requestMatchers("/api/test/instructor").hasRole("INSTRUCTOR")
@@ -43,9 +46,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/courses/students/**", "/api/enrollments/**").hasRole("STUDENT")
                         .requestMatchers("/api/test/student").hasRole("STUDENT")
 
-                   //     .requestMatchers("/api/courses/**").hasAnyRole("INSTRUCTOR")
+                       .requestMatchers("/api/courses/**").hasAnyRole("INSTRUCTOR", "STUDENT")
 
-                        .requestMatchers("/api/courses/**").permitAll()
+                    //    .requestMatchers("/api/courses/**").permitAll()
                     //    .requestMatchers("/api/courses/**").hasAnyRole("INSTRUCTOR", "STUDENT")
                         .anyRequest().authenticated()
 

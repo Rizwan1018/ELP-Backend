@@ -15,4 +15,5 @@ public class CourseDTO {
     private String thumbnail;
     private String videoUrl;
     private String preRequisite;
+    private boolean enrolled = false;
 }
