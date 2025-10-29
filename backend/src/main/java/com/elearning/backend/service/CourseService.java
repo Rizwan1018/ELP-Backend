@@ -2,7 +2,9 @@ package com.elearning.backend.service;
 
 import com.elearning.backend.dto.CourseDTO;
 import com.elearning.backend.model.Course;
+import com.elearning.backend.model.Enrollment;
 import com.elearning.backend.repository.CourseRepository;
+import com.elearning.backend.repository.EnrollmentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,15 +12,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
 
     private final CourseRepository courseRepository;
+    private final EnrollmentRepository enrollmentRepository;
 
-    public CourseService(CourseRepository courseRepository){
+    public CourseService(CourseRepository courseRepository,EnrollmentRepository enrollmentRepository){
+
         this.courseRepository = courseRepository;
+        this.enrollmentRepository = enrollmentRepository;
     }
 
     private CourseDTO convertToDTO(Course course){
@@ -53,10 +59,22 @@ public class CourseService {
     }
 
 
-    public List<CourseDTO> getAllCourses(){
-        return courseRepository.findAll()
-        .stream().map(this::convertToDTO)
-                .collect(Collectors.toList()) ;
+    public List<CourseDTO> getAllCourses(Long studentId){
+        List<Course> courses = courseRepository.findAll();
+        List<CourseDTO> dtos = courses.stream().map(this::convertToDTO).collect(Collectors.toList());
+
+        if (studentId != null) {
+            List<Enrollment> enrollments = enrollmentRepository.findByStudentId(studentId);
+            Set<Long> enrolledCourseIds = enrollments.stream()
+                    .map(Enrollment::getCourseId)
+                    .collect(Collectors.toSet());
+            for (CourseDTO cd : dtos) {
+                if (cd.getId() != null && enrolledCourseIds.contains(cd.getId())) {
+                    cd.setEnrolled(true);
+                }
+            }
+        }
+        return dtos;
     }
 
 
@@ -107,7 +125,7 @@ public class CourseService {
         }
     }
 
-    private static final String basePath = "C:/Users/2441337/angular/ELP/uploads";
+    private static final String basePath = "C:/Users/2440812/angular/uploads";
 
     private String saveFile(MultipartFile file, String subFolder) throws IOException {
         if(file == null || file.isEmpty()) return null;
