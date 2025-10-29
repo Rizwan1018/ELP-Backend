@@ -125,7 +125,38 @@ public class CourseService {
         }
     }
 
-    private static final String basePath = "C:/Users/2440812/angular/uploads";
+    public CourseDTO updateCourse(Long id,String title, String description, String domain, String level,Integer durationHrs, String tags, Long instructorId, MultipartFile thumbnail, MultipartFile video, MultipartFile prerequisite
+    ) throws Exception{
+        try {
+            Course course = courseRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("course not found" + id));
+
+            course.setTitle(title);
+            course.setDescription(description);
+            course.setDomain(domain);
+            course.setLevel(level);
+            course.setDurationHrs(durationHrs);
+            course.setTags(tags!=null && !tags.isBlank() ? Arrays.asList(tags.split(",")): null);
+            course.setInstructorId(instructorId);
+
+            if(thumbnail != null && !thumbnail.isEmpty()) {
+                course.setThumbnail(saveFile(thumbnail, "thumbnails"));
+            }
+            if(video != null && !video.isEmpty()){
+                course.setVideoUrl(saveFile(video, "videos"));
+            }
+
+            if(prerequisite != null && !prerequisite.isEmpty()){
+                course.setPreRequisite(saveFile(prerequisite, "prerequisites"));
+            }
+            return  convertToDTO(courseRepository.save(course));
+        } catch (Exception e){
+            throw new Exception("Update failed" +e);
+        }
+
+    }
+
+    private static final String basePath = "C:/Users/2441337/angular/ELP/uploads/";
 
     private String saveFile(MultipartFile file, String subFolder) throws IOException {
         if(file == null || file.isEmpty()) return null;

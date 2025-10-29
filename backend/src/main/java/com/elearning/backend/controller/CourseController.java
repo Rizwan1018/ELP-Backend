@@ -64,13 +64,22 @@ public class CourseController {
         return courseService.getCourseById(id);
     }
 
-    @PutMapping("/{id}")
-    public CourseDTO updateCourse(@PathVariable Long id, @RequestBody CourseDTO courseDTO) {
-        courseDTO.setId(id);  // Set ID so it updates instead of creating new
-        return courseService.saveCourse(courseDTO);
+    @PutMapping(value = "/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public CourseDTO updateCourse(@PathVariable Long id,
+                                  @RequestParam("title") String title,
+                                  @RequestParam("description") String description,
+                                  @RequestParam("domain") String domain,
+                                  @RequestParam("level") String level,
+                                  @RequestParam("durationHrs") Integer durationHrs,
+                                  @RequestParam("tags") String tags,
+                                  @RequestParam("instructorId") Long instructorId,
+                                  @RequestParam(value = "thumbnail", required = false)MultipartFile thumbnail,
+                                  @RequestParam(value = "video", required = false)MultipartFile video,
+                                  @RequestParam(value = "prerequisite", required = false)MultipartFile prerequisite ) throws Exception {
+        return courseService.updateCourse(id,title, description, domain, level,durationHrs, tags, instructorId, thumbnail, video, prerequisite);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}")
     public void deleteCourse(@PathVariable Long id) {
         courseService.deleteCourse(id);
     }

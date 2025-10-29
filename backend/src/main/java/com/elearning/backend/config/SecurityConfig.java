@@ -43,6 +43,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/instructors/**").hasRole("INSTRUCTOR")
                         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 
+                        .requestMatchers("/React/**").hasRole("STUDENT")
                         .requestMatchers("/api/courses/students/**", "/api/enrollments/**").hasRole("STUDENT")
                         .requestMatchers("/api/test/student").hasRole("STUDENT")
 
