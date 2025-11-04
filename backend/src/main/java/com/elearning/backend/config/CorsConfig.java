@@ -17,9 +17,7 @@ public class CorsConfig {
                 registry.addMapping("/api/**")
                         .allowedOrigins("http://localhost:4200")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(false)   // added by vishal this two line
-                        .maxAge(3600);
+                        .allowedHeaders("*");
             }
         };
     }

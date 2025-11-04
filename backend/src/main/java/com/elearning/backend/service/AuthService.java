@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -77,4 +78,16 @@ public class AuthService {
                 user.getRole(),
                 token);
     }
+    public Optional<User> findByEmail(String email) {
+        return userRepo.findByEmail(email.trim().toLowerCase());
+    }
+
+    public void updatePassword(String email, String newPassword) {
+        Optional<User> userOpt = userRepo.findByEmail(email.trim().toLowerCase());
+        userOpt.ifPresent(user -> {
+            user.setPassword(passwordEncoder.encode(newPassword)); // ✅ Hash the password
+            userRepo.save(user);
+        });
+    }
+
 }

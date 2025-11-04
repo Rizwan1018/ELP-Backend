@@ -156,7 +156,7 @@ public class CourseService {
 
     }
 
-    private static final String basePath = "C:/Users/2440768/ELP-Backend/ELP-Backend/uploads/";
+    private static final String basePath = "C:/Users/2440857/Downloads/ELP-Backend-main";
 
     private String saveFile(MultipartFile file, String subFolder) throws IOException {
         if(file == null || file.isEmpty()) return null;
