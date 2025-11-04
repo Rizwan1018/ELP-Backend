@@ -16,4 +16,8 @@ public class CourseDTO {
     private String videoUrl;
     private String preRequisite;
     private boolean enrolled = false;
+
+    // NEW:
+    private Double avgRating;
+    private Long studentsCount;
 }

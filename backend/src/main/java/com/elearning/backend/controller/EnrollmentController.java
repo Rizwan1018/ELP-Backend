@@ -2,6 +2,7 @@ package com.elearning.backend.controller;
 
 import com.elearning.backend.dto.EnrollmentDTO;
 import com.elearning.backend.service.EnrollmentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,11 +10,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/enrollments")
 @CrossOrigin(origins = "http://localhost:4200")
+@RequiredArgsConstructor
 public class EnrollmentController {
     private final EnrollmentService enrollmentService;
-    public EnrollmentController(EnrollmentService enrollmentService){
-        this.enrollmentService = enrollmentService;
-    }
 
     @GetMapping
     public List<EnrollmentDTO> getAll() {
@@ -35,7 +34,6 @@ public class EnrollmentController {
         return enrollmentService.getEnrollmentsByCourse(courseId);
     }
 
-
     @PostMapping
     public EnrollmentDTO enroll(@RequestBody EnrollmentDTO dto){
         return enrollmentService.enroll(dto.getStudentId(), dto.getCourseId());
@@ -54,5 +52,33 @@ public class EnrollmentController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
         enrollmentService.deleteEnrollment(id);
+    }
+
+    // ----- NEW ENDPOINTS -----
+
+    /**
+     * Mark enrollment watched (video ended)
+     * Body: {"lastWatchedPosition": 120}  (optional)
+     */
+    @PutMapping("/{id}/watched")
+    public EnrollmentDTO markWatched(@PathVariable Long id, @RequestBody(required = false) Integer lastWatchedPosition) {
+        return enrollmentService.markWatched(id, lastWatchedPosition);
+    }
+
+    /**
+     * Mark enrollment done (the user checked "Done"). Requires watched==true.
+     */
+    @PutMapping("/{id}/done")
+    public EnrollmentDTO markDone(@PathVariable Long id) {
+        return enrollmentService.markDone(id);
+    }
+
+    /**
+     * Set rating (1..5). Requires done==true.
+     * Body: {"rating": 5}
+     */
+    @PutMapping("/{id}/rating")
+    public EnrollmentDTO setRating(@PathVariable Long id, @RequestBody Integer rating) {
+        return enrollmentService.setRating(id, rating);
     }
 }

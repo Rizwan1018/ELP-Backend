@@ -27,4 +27,17 @@ public class Enrollment {
 
     @Column(nullable = false)
     private String status = "enrolled"; // enrolled, paused, completed
+
+    // NEW fields:
+    @Column(nullable = false)
+    private Boolean watched = false;      // video watched flag
+
+    @Column(nullable = false)
+    private Boolean done = false;         // marked done (or assignment complete)
+
+    @Column(nullable = true)
+    private Integer rating;               // 1..5 or null if not rated yet
+
+    @Column(nullable = true)
+    private Integer lastWatchedPosition;  // seconds (optional)
 }
