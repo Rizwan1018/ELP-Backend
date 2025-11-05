@@ -39,6 +39,14 @@ public class CourseService {
         dto.setDescription(course.getDescription());
         dto.setThumbnail(course.getThumbnail());
         dto.setVideoUrl(course.getVideoUrl());
+        dto.setPreRequisite(course.getPreRequisite());
+
+        // new: set avgRating & studentsCount from enrollment repo
+        Double avg = enrollmentRepository.findAverageRatingByCourseId(course.getId());
+        dto.setAvgRating(avg != null ? Math.round(avg * 10.0) / 10.0 : null); // rounded to 1 decimal
+        Long count = enrollmentRepository.countByCourseId(course.getId());
+        dto.setStudentsCount(count != null ? count : 0L);
+
         return dto;
     }
 
@@ -156,7 +164,7 @@ public class CourseService {
 
     }
 
-    private static final String basePath = "C:/Users/2440857/Downloads/ELP-Backend-main";
+    private static final String basePath = "C:/Users/2441337/angular/ELP/uploads";
 
     private String saveFile(MultipartFile file, String subFolder) throws IOException {
         if(file == null || file.isEmpty()) return null;
