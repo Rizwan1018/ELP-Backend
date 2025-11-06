@@ -2,14 +2,17 @@ package com.elearning.backend.controller;
 
 import com.elearning.backend.dto.EnrollmentDTO;
 import com.elearning.backend.service.EnrollmentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.HTML;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/enrollments")
 @CrossOrigin(origins = "http://localhost:4200")
+@Tag(name = "Enrollment APIs", description = "GET,POST,PUT Courses")
 public class EnrollmentController {
     private final EnrollmentService enrollmentService;
 
@@ -51,11 +54,6 @@ public class EnrollmentController {
     @PutMapping("/{id}/status")
     public EnrollmentDTO updateStatus(@PathVariable Long id, @RequestBody String status) {
         return enrollmentService.updateStatus(id, status);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        enrollmentService.deleteEnrollment(id);
     }
 
     @PutMapping("/{id}/watched")

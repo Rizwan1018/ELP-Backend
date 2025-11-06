@@ -3,6 +3,8 @@ package com.elearning.backend.controller;
 import com.elearning.backend.dto.AuthDTO;
 import com.elearning.backend.model.User;
 import com.elearning.backend.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/auth")
 @Slf4j
+@Tag(name = "Authentication APIs", description = " ")
 public class AuthController {
 
     private final AuthService authService;
@@ -23,6 +26,11 @@ public class AuthController {
         this.authService = authService;
     }
 
+
+    @Operation(
+            summary = "Register a new user",
+            description = "Creates a student or instructor based on role"
+    )
     @PostMapping("/signup")
     public AuthDTO.AuthResponse signup(@RequestBody AuthDTO.SignupRequest request){
         log.info(""+request);

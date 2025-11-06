@@ -4,6 +4,8 @@ package com.elearning.backend.controller;
 import com.elearning.backend.dto.CourseDTO;
 import com.elearning.backend.model.Instructor;
 import com.elearning.backend.service.CourseService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/courses")
 @CrossOrigin(origins = "http://localhost:4200")
+@Tag(name = "Course APIs", description = "GET,POST,PUT,DELETE Courses")
 public class CourseController {
 
 
@@ -54,6 +57,7 @@ public class CourseController {
         return courseService.getAllCourses(studentId);
     }
 
+    @SecurityRequirement(name = "BearerAuth")
     @GetMapping("/instructor/{instructorId}")
     public List<CourseDTO> getCourseByInstructorId(@PathVariable Long instructorId){
         return courseService.getCoursesByInstructorId(instructorId);

@@ -79,10 +79,6 @@ public class EnrollmentService {
         return toDto(enrollmentRepository.save(e));
     }
 
-    public void deleteEnrollment(Long id) {
-        enrollmentRepository.deleteById(id);
-    }
-
 // ---------- NEW API ACTIONS ----------
 
 
