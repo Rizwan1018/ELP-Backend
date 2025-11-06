@@ -51,31 +51,6 @@ public class AssessmentController {
         service.delete(id);
     }
 
-    /**
-     * Optional: Evaluate answers server-side.
-     * Body should be: { "0": 2, "1": 0, ... } (questionIndex -> chosenOptionIndex)
-     */
-//    @PostMapping("/{id}/evaluate")
-//    public ScoreResponse evaluate(@PathVariable Long id, @RequestBody Map<Integer, Integer> answers) {
-//        Assessment assessment = repo.findById(id)
-//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Assessment not found: " + id));
-//
-//        List<Question> questions = assessment.getQuestions();
-//        int total = questions.size();
-//        int correct = 0;
-//
-//        for (int i = 0; i < questions.size(); i++) {
-//            Question q = questions.get(i);
-//            Integer chosen = answers.get(i);
-//            if (chosen != null && chosen.equals(q.getCorrectAnswer())) {
-//                correct++;
-//            }
-//        }
-//        return new ScoreResponse(total, correct);
-//    }
-
-
-
 
     @PostMapping("/{id}/evaluate")
     public ScoreResponse evaluate(@PathVariable Long id, @RequestBody Map<Integer, Integer> answers) {
