@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void  addResourceHandlers(ResourceHandlerRegistry registry){
         registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:///C:/Users/2441337/angular/ELP/uploads");
+                .addResourceLocations("file:///C:/Users/2440768/ELP-Backend/ELP-Backend/uploads");
     }
 
 }
