@@ -2,7 +2,9 @@ package com.elearning.backend.service;
 
 import com.elearning.backend.dto.EnrollmentDTO;
 import com.elearning.backend.model.Enrollment;
+import com.elearning.backend.repository.CourseRepository;
 import com.elearning.backend.repository.EnrollmentRepository;
+import com.elearning.backend.repository.NotificationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,9 +15,17 @@ import java.util.stream.Collectors;
 @Service
 public class EnrollmentService {
     private final EnrollmentRepository enrollmentRepository;
+    private final NotificationRepository notificationRepository;
+    private final CourseRepository courseRepository;
 
-    public EnrollmentService(EnrollmentRepository enrollmentRepository) {
+
+    public EnrollmentService(EnrollmentRepository enrollmentRepository, NotificationRepository notificationRepository,
+                             CourseRepository courseRepository
+    ) {
         this.enrollmentRepository = enrollmentRepository;
+        this.notificationRepository = notificationRepository;
+        this.courseRepository = courseRepository;
+
     }
 
     private EnrollmentDTO toDto(Enrollment e) {
@@ -45,9 +55,9 @@ public class EnrollmentService {
     }
 
     public EnrollmentDTO enroll(Long studentId, Long courseId) {
-        // return existing if present
         var existing = enrollmentRepository.findByStudentIdAndCourseId(studentId, courseId);
         if (existing.isPresent()) {
+            // Don't duplicate notification for already-enrolled
             return toDto(existing.get());
         }
         Enrollment e = new Enrollment();
@@ -57,8 +67,20 @@ public class EnrollmentService {
         e.setProgress(0);
         e.setStatus("enrolled");
         Enrollment saved = enrollmentRepository.save(e);
+
+        // create notification to the student
+        String title = courseRepository.findById(courseId)
+                .map(c -> c.getTitle()).orElse("the course");
+        com.elearning.backend.model.Notification n = new com.elearning.backend.model.Notification();
+        n.setUserId(studentId);
+        n.setType("enrollment");
+        n.setCourseId(courseId);
+        n.setMessage("You have successfully enrolled in \"" + title + "\".");
+        notificationRepository.save(n);
+
         return toDto(saved);
     }
+
 
     public EnrollmentDTO updateProgress(Long id, Integer progress) {
         var opt = enrollmentRepository.findById(id);
