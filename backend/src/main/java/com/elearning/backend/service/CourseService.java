@@ -105,7 +105,17 @@ public class CourseService {
     }
 
     public void deleteCourse(Long id){
-        courseRepository.deleteById(id);
+       // courseRepository.deleteById(id);
+        List<Enrollment> enrollments = enrollmentRepository.findByCourseId(id);
+        if(!enrollments.isEmpty()){
+            enrollmentRepository.deleteAll(enrollments);
+
+            if(courseRepository.existsById(id)){
+                courseRepository.deleteById(id);
+            }else{
+                throw new CourseNotFoundException("Course not found with ID :" +id);
+            }
+        }
     }
 
 

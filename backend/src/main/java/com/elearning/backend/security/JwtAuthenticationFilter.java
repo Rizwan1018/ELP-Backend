@@ -17,11 +17,12 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
@@ -64,8 +65,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request,response);
 
-        System.out.println("JwtAuthenticationFilter Triggered for URL:"+ request.getRequestURI());
-        System.out.println("Authentication Header:"+ authHeader);
+        log.info("JwtAuthenticationFilter Triggered for URL: {} ",request.getRequestURI());
+        log.info("Authentication Header:{}", authHeader);
 
     }
 }
