@@ -31,6 +31,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/docs").permitAll()
+
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/auth/signup").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
@@ -56,7 +62,13 @@ public class SecurityConfig {
 
                        .requestMatchers("/api/courses/**").hasAnyRole("INSTRUCTOR", "STUDENT")
 
-                    //    .requestMatchers("/api/courses/**").permitAll()
+
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/assessment-attempts").hasRole("STUDENT")
+                        .requestMatchers(org.springframework.http.HttpMethod.GET,  "/api/assessment-attempts").hasRole("STUDENT")
+                        .requestMatchers(org.springframework.http.HttpMethod.GET,  "/api/assessment-attempts/by-assessment/**").hasRole("INSTRUCTOR")
+
+
+                        //    .requestMatchers("/api/courses/**").permitAll()
                     //    .requestMatchers("/api/courses/**").hasAnyRole("INSTRUCTOR", "STUDENT")
                         .anyRequest().authenticated()
 

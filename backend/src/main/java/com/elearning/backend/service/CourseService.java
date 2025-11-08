@@ -1,6 +1,7 @@
 package com.elearning.backend.service;
 
 import com.elearning.backend.dto.CourseDTO;
+import com.elearning.backend.exception.CourseNotFoundException;
 import com.elearning.backend.model.Course;
 import com.elearning.backend.model.Enrollment;
 import com.elearning.backend.repository.CourseRepository;
@@ -98,8 +99,9 @@ public class CourseService {
     }
 
     public CourseDTO getCourseById(Long id){
-        return courseRepository.findById(id).map(this::convertToDTO)
-                .orElse(null);
+        return courseRepository.findById(id)
+                .map(this::convertToDTO)
+                .orElseThrow(() -> new CourseNotFoundException("Course not found with id: " + id));
     }
 
     public void deleteCourse(Long id){
@@ -129,7 +131,7 @@ public class CourseService {
             Course saved = courseRepository.save(course);
             return convertToDTO(saved);
         } catch(Exception e){
-            throw new Exception("Something went wrong",e);
+            throw new RuntimeException("Failed to upload course files. Reason:",e);
         }
     }
 

@@ -31,21 +31,13 @@ public class AssessmentService {
         return repo.findAll().stream().map(AssessmentMapper::toDto).toList();
     }
 
-//    @Transactional
-//    public AssessmentDto findById(Long id) {
-//        Assessment entity = repo.findById(id)
-//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Assessment not found: " + id));
-//        return AssessmentMapper.toDto(entity);
-//    }
-
 
     @Transactional
     public AssessmentDto findById(Long id) {
         Assessment entity = repo.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Assessment not found: " + id));
 
-        // Force load questions and options
-        entity.getQuestions().forEach(q -> q.getOptions().size());
+         entity.getQuestions().forEach(q -> q.getOptions().size());
 
         return AssessmentMapper.toDto(entity);
     }

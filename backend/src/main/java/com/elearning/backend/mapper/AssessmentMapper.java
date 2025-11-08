@@ -1,6 +1,5 @@
+
 package com.elearning.backend.mapper;
-
-
 
 import com.elearning.backend.dto.AssessmentDto;
 import com.elearning.backend.dto.QuestionDto;
@@ -22,6 +21,7 @@ public class AssessmentMapper {
         if (entity.getQuestions() != null) {
             for (Question q : entity.getQuestions()) {
                 QuestionDto qDto = new QuestionDto();
+                qDto.setId(q.getId()); // include id
                 qDto.setText(q.getText());
                 qDto.setOptions(q.getOptions());
                 qDto.setCorrectAnswer(q.getCorrectAnswer());
@@ -43,7 +43,8 @@ public class AssessmentMapper {
                 q.setText(qDto.getText());
                 q.setOptions(qDto.getOptions());
                 q.setCorrectAnswer(qDto.getCorrectAnswer());
-                entity.addQuestion(q);
+                q.setAssessment(entity);
+                entity.getQuestions().add(q);
             }
         }
         return entity;
@@ -53,14 +54,15 @@ public class AssessmentMapper {
         existing.setTitle(dto.getTitle());
         existing.setDescription(dto.getDescription());
 
-        existing.clearQuestions();
+        existing.getQuestions().clear();
         if (dto.getQuestions() != null) {
             for (QuestionDto qDto : dto.getQuestions()) {
                 Question q = new Question();
                 q.setText(qDto.getText());
                 q.setOptions(qDto.getOptions());
                 q.setCorrectAnswer(qDto.getCorrectAnswer());
-                existing.addQuestion(q);
+                q.setAssessment(existing);
+                existing.getQuestions().add(q);
             }
         }
     }
