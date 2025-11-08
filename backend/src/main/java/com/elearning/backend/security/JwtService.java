@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.nio.charset.StandardCharsets;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class JwtService {
 
     @Value("${app.jwt.secret}")
@@ -39,7 +41,7 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
 
-        System.out.println("Parsed JWT claims :" +claims);
+        log.info("Parse JWT claims {}:", claims);
         return claims;
     }
 

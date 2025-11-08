@@ -105,7 +105,17 @@ public class CourseService {
     }
 
     public void deleteCourse(Long id){
-        courseRepository.deleteById(id);
+       // courseRepository.deleteById(id);
+        List<Enrollment> enrollments = enrollmentRepository.findByCourseId(id);
+        if(!enrollments.isEmpty()){
+            enrollmentRepository.deleteAll(enrollments);
+
+            if(courseRepository.existsById(id)){
+                courseRepository.deleteById(id);
+            }else{
+                throw new CourseNotFoundException("Course not found with ID :" +id);
+            }
+        }
     }
 
 
@@ -166,7 +176,7 @@ public class CourseService {
 
     }
 
-    private static final String basePath = "C:/Users/2440768/ELP-Backend/ELP-Backend/uploads";
+    private static final String basePath = "C:/Users/2441337/angular/ELP/uploads";
 
     private String saveFile(MultipartFile file, String subFolder) throws IOException {
         if(file == null || file.isEmpty()) return null;
