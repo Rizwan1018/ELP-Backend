@@ -1,36 +1,37 @@
 package com.elearning.backend.controller;
 
-import com.elearning.backend.model.Payment;
-import com.elearning.backend.service.PaymentService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
+import com.razorpay.Order;
+import com.razorpay.RazorpayClient;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/payments")
 @CrossOrigin(origins = "http://localhost:4200")
-@Tag(name = "Payment APIs", description = "Simulated Payment Processing and History")
 public class PaymentController {
 
-    private final PaymentService paymentService;
+    private RazorpayClient razorpayClient;
 
-    public PaymentController(PaymentService paymentService) {
-        this.paymentService = paymentService;
+    public PaymentController() throws Exception {
+        this.razorpayClient = new RazorpayClient("rzp_test_RdGkzD23qpCkc7", "NlArfssB9cdgJ0p2qBgCyFWd"); // replace with yours
     }
 
-    // 🎯 Process Payment
-    @PostMapping("/process")
-    public ResponseEntity<Payment> processPayment(
-            @RequestParam Long studentId,
-            @RequestParam Long courseId) {
-        return ResponseEntity.ok(paymentService.processPayment(studentId, courseId));
-    }
+    @PostMapping("/create-order")
+    public Map<String, Object> createOrder(@RequestParam int amount) throws Exception {
+        JSONObject orderRequest = new JSONObject();
+        orderRequest.put("amount", amount * 100); // amount in paise
+        orderRequest.put("currency", "INR");
+        orderRequest.put("receipt", "txn_" + System.currentTimeMillis());
 
-    // 📜 View Payment History
-    @GetMapping("/student/{studentId}")
-    public ResponseEntity<List<Payment>> getPayments(@PathVariable Long studentId) {
-        return ResponseEntity.ok(paymentService.getPaymentsByStudent(studentId));
+        Order order = razorpayClient.orders.create(orderRequest);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("orderId", order.get("id"));
+        response.put("amount", order.get("amount"));
+        response.put("currency", order.get("currency"));
+        return response;
     }
 }
