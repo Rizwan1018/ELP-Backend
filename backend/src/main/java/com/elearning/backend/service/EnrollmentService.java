@@ -2,7 +2,9 @@ package com.elearning.backend.service;
 
 import com.elearning.backend.dto.EnrollmentDTO;
 import com.elearning.backend.model.Enrollment;
+import com.elearning.backend.repository.CourseRepository;
 import com.elearning.backend.repository.EnrollmentRepository;
+import com.elearning.backend.repository.NotificationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,13 +12,33 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.elearning.backend.repository.StudentRepository;
+import com.elearning.backend.model.Student;
+import com.elearning.backend.model.Course;
+
+
 @Service
 public class EnrollmentService {
     private final EnrollmentRepository enrollmentRepository;
+    private final NotificationRepository notificationRepository;
+    private final CourseRepository courseRepository;
 
-    public EnrollmentService(EnrollmentRepository enrollmentRepository) {
+    private final StudentRepository studentRepository;
+    private final EmailService emailService;
+
+
+    public EnrollmentService(EnrollmentRepository enrollmentRepository,
+                             NotificationRepository notificationRepository,
+                             CourseRepository courseRepository,
+                             StudentRepository studentRepository,      // NEW
+                             EmailService emailService) {              // NEW
         this.enrollmentRepository = enrollmentRepository;
+        this.notificationRepository = notificationRepository;
+        this.courseRepository = courseRepository;
+        this.studentRepository = studentRepository;   // NEW
+        this.emailService = emailService;             // NEW
     }
+
 
     private EnrollmentDTO toDto(Enrollment e) {
         EnrollmentDTO d = new EnrollmentDTO();
@@ -45,11 +67,12 @@ public class EnrollmentService {
     }
 
     public EnrollmentDTO enroll(Long studentId, Long courseId) {
-        // return existing if present
         var existing = enrollmentRepository.findByStudentIdAndCourseId(studentId, courseId);
         if (existing.isPresent()) {
+            // Don't duplicate notification for already-enrolled
             return toDto(existing.get());
         }
+
         Enrollment e = new Enrollment();
         e.setStudentId(studentId);
         e.setCourseId(courseId);
@@ -57,8 +80,40 @@ public class EnrollmentService {
         e.setProgress(0);
         e.setStatus("enrolled");
         Enrollment saved = enrollmentRepository.save(e);
+
+        // --- Notification (same as before) ---
+        String title = courseRepository.findById(courseId)
+                .map(Course::getTitle)
+                .orElse("the course");
+        com.elearning.backend.model.Notification n = new com.elearning.backend.model.Notification();
+        n.setUserId(studentId);
+        n.setType("enrollment");
+        n.setCourseId(courseId);
+        n.setMessage("You have successfully enrolled in \"" + title + "\".");
+        notificationRepository.save(n);
+
+        // --- NEW: Send email confirmation (best-effort) ---
+        try {
+            Student student = studentRepository.findById(studentId).orElse(null);
+            if (student != null && student.getEmail() != null && !student.getEmail().isBlank()) {
+                String subject = "Enrollment Confirmation: " + title;
+                String body =
+                        "Hi " + (student.getName() != null ? student.getName() : "there") + ",\n\n" +
+                                "You have successfully enrolled in \"" + title + "\".\n" +
+                                "You can now continue learning on INCO LEARN.\n\n" +
+                                "Happy learning!\n" +
+                                "— INCO LEARN Team";
+                emailService.sendPlainText(student.getEmail(), subject, body);
+            }
+        } catch (Exception ex) {
+            // log and continue; we don't want to fail the API because email failed
+            System.err.println("Enrollment email failed: " + ex.getMessage());
+        }
+
         return toDto(saved);
     }
+
+
 
     public EnrollmentDTO updateProgress(Long id, Integer progress) {
         var opt = enrollmentRepository.findById(id);
@@ -90,7 +145,6 @@ public class EnrollmentService {
         Enrollment saved = enrollmentRepository.save(e);
         return toDto(saved);
     }
-
 
     @Transactional
     public EnrollmentDTO markDone(Long enrollmentId) {
