@@ -1,4 +1,4 @@
-package com.elearning.backend.model;
+package com.elearning.backend.entity;
 
 public enum Role {
     STUDENT,

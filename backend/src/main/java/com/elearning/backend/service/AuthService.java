@@ -1,9 +1,10 @@
 package com.elearning.backend.service;
 
 import com.elearning.backend.dto.AuthDTO.*;
-import com.elearning.backend.model.*;
+import com.elearning.backend.entity.*;
 import com.elearning.backend.repository.*;
 import com.elearning.backend.security.JwtService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class AuthService {
 
     private final UserRepository userRepo;
@@ -34,7 +36,7 @@ public class AuthService {
         if (userRepo.existsByEmail(request.email())) {
             throw new RuntimeException("Email already exists");
         }
-        System.out.println("Full name"+ request.fullName());
+        log.info("Full name"+ request.fullName());
 
         User user = new User();
         user.setFullName(request.fullName());
@@ -85,7 +87,7 @@ public class AuthService {
     public void updatePassword(String email, String newPassword) {
         Optional<User> userOpt = userRepo.findByEmail(email.trim().toLowerCase());
         userOpt.ifPresent(user -> {
-            user.setPassword(passwordEncoder.encode(newPassword)); // ✅ Hash the password
+            user.setPassword(passwordEncoder.encode(newPassword)); // Hash the password
             userRepo.save(user);
         });
     }

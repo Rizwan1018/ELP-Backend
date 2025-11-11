@@ -1,6 +1,6 @@
 package com.elearning.backend.repository;
 
-import com.elearning.backend.model.Enrollment;
+import com.elearning.backend.entity.Enrollment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

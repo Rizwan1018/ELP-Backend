@@ -1,9 +1,7 @@
-package com.elearning.backend.model;
+package com.elearning.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 @Entity

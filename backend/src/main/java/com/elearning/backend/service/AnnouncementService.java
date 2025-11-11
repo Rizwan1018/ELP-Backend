@@ -1,9 +1,9 @@
 package com.elearning.backend.service;
 
 import com.elearning.backend.dto.AnnouncementDTO;
-import com.elearning.backend.model.Announcement;
-import com.elearning.backend.model.Enrollment;
-import com.elearning.backend.model.Notification;
+import com.elearning.backend.entity.Announcement;
+import com.elearning.backend.entity.Enrollment;
+import com.elearning.backend.entity.Notification;
 import com.elearning.backend.repository.AnnouncementRepository;
 import com.elearning.backend.repository.EnrollmentRepository;
 import com.elearning.backend.repository.NotificationRepository;

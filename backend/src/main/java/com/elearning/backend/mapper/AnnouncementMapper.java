@@ -1,7 +1,7 @@
 package com.elearning.backend.mapper;
 
 import com.elearning.backend.dto.AnnouncementDTO;
-import com.elearning.backend.model.Announcement;
+import com.elearning.backend.entity.Announcement;
 
 public class AnnouncementMapper {
     public static AnnouncementDTO toDto(Announcement a) {

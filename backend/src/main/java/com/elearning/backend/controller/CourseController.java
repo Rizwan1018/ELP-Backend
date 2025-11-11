@@ -2,7 +2,6 @@ package com.elearning.backend.controller;
 
 
 import com.elearning.backend.dto.CourseDTO;
-import com.elearning.backend.model.Instructor;
 import com.elearning.backend.service.CourseService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import java.awt.*;
 import java.util.List;
 
 

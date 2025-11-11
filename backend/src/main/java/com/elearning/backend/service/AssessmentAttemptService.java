@@ -2,7 +2,7 @@
 package com.elearning.backend.service;
 
 import com.elearning.backend.dto.*;
-import com.elearning.backend.model.*;
+import com.elearning.backend.entity.*;
 import com.elearning.backend.repository.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;

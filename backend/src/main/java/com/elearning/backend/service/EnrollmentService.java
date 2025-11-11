@@ -1,7 +1,7 @@
 package com.elearning.backend.service;
 
 import com.elearning.backend.dto.EnrollmentDTO;
-import com.elearning.backend.model.Enrollment;
+import com.elearning.backend.entity.Enrollment;
 import com.elearning.backend.repository.CourseRepository;
 import com.elearning.backend.repository.EnrollmentRepository;
 import com.elearning.backend.repository.NotificationRepository;
@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.elearning.backend.repository.StudentRepository;
-import com.elearning.backend.model.Student;
-import com.elearning.backend.model.Course;
+import com.elearning.backend.entity.Student;
+import com.elearning.backend.entity.Course;
 
 
 @Service
@@ -85,7 +85,7 @@ public class EnrollmentService {
         String title = courseRepository.findById(courseId)
                 .map(Course::getTitle)
                 .orElse("the course");
-        com.elearning.backend.model.Notification n = new com.elearning.backend.model.Notification();
+        com.elearning.backend.entity.Notification n = new com.elearning.backend.entity.Notification();
         n.setUserId(studentId);
         n.setType("enrollment");
         n.setCourseId(courseId);

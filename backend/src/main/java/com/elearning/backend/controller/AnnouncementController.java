@@ -1,7 +1,7 @@
 package com.elearning.backend.controller;
 
 import com.elearning.backend.dto.AnnouncementDTO;
-import com.elearning.backend.model.Announcement;
+import com.elearning.backend.entity.Announcement;
 import com.elearning.backend.service.AnnouncementService;
 import com.elearning.backend.service.CourseService;
 import org.springframework.http.HttpStatus;

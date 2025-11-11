@@ -3,8 +3,8 @@ package com.elearning.backend.mapper;
 
 import com.elearning.backend.dto.AssessmentDto;
 import com.elearning.backend.dto.QuestionDto;
-import com.elearning.backend.model.Assessment;
-import com.elearning.backend.model.Question;
+import com.elearning.backend.entity.Assessment;
+import com.elearning.backend.entity.Question;
 
 import java.util.ArrayList;
 import java.util.List;

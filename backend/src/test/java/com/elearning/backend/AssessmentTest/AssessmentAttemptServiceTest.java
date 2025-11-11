@@ -1,11 +1,10 @@
 package com.elearning.backend.AssessmentTest;
 
 import com.elearning.backend.dto.*;
-import com.elearning.backend.model.*;
+import com.elearning.backend.entity.*;
 import com.elearning.backend.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.server.ResponseStatusException;
 

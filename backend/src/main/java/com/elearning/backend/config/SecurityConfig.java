@@ -38,7 +38,7 @@ public class SecurityConfig {
                                 "/docs").permitAll()
 
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/auth/signup").permitAll()
+
                         .requestMatchers("/uploads/**").permitAll()
                         .requestMatchers("/images/**","/css/**","/js/**","/uploads/**").permitAll()
 
@@ -54,15 +54,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/notifications/**").authenticated()
                         .requestMatchers("/api/announcements/**").authenticated()
 
-
-
                         .requestMatchers("/React/**").hasRole("STUDENT")
                         .requestMatchers("/api/courses/students/**", "/api/enrollments/**").hasRole("STUDENT")
                         .requestMatchers("/api/payments/**").hasAnyRole("STUDENT", "INSTRUCTOR")
                         .requestMatchers("/api/test/student").hasRole("STUDENT")
 
                        .requestMatchers("/api/courses/**").hasAnyRole("INSTRUCTOR", "STUDENT")
-
 
                         .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/assessment-attempts").hasRole("STUDENT")
                         .requestMatchers(org.springframework.http.HttpMethod.GET,  "/api/assessment-attempts").hasRole("STUDENT")

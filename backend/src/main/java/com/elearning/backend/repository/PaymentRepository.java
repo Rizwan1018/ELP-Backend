@@ -1,6 +1,6 @@
 package com.elearning.backend.repository;
 
-import com.elearning.backend.model.Payment;
+import com.elearning.backend.entity.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

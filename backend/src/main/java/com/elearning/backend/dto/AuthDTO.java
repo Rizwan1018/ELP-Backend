@@ -1,6 +1,6 @@
 package com.elearning.backend.dto;
 
-import com.elearning.backend.model.Role;
+import com.elearning.backend.entity.Role;
 
 public class AuthDTO {
 

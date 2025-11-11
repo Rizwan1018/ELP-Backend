@@ -1,7 +1,7 @@
 package com.elearning.backend.controller;
 
-import com.elearning.backend.model.Instructor;
-import com.elearning.backend.model.Student;
+import com.elearning.backend.entity.Instructor;
+import com.elearning.backend.entity.Student;
 import com.elearning.backend.repository.InstructorRepository;
 import com.elearning.backend.repository.StudentRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;

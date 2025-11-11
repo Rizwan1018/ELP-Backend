@@ -1,7 +1,7 @@
 package com.elearning.backend.EnrollementTest;
 
 import com.elearning.backend.dto.EnrollmentDTO;
-import com.elearning.backend.model.Enrollment;
+import com.elearning.backend.entity.Enrollment;
 import com.elearning.backend.repository.EnrollmentRepository;
 import com.elearning.backend.service.EnrollmentService;
 import org.junit.jupiter.api.DisplayName;

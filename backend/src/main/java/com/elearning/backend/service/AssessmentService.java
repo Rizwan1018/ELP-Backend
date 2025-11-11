@@ -4,8 +4,8 @@ package com.elearning.backend.service;
 
 import com.elearning.backend.dto.AssessmentDto;
 import com.elearning.backend.dto.ScoreResponse;
-import com.elearning.backend.model.Assessment;
-import com.elearning.backend.model.Question;
+import com.elearning.backend.entity.Assessment;
+import com.elearning.backend.entity.Question;
 import com.elearning.backend.mapper.AssessmentMapper;
 import com.elearning.backend.repository.AssessmentRepository;
 import org.springframework.http.HttpStatus;

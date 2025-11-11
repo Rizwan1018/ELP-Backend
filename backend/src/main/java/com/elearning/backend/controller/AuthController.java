@@ -1,7 +1,7 @@
 package com.elearning.backend.controller;
 
 import com.elearning.backend.dto.AuthDTO;
-import com.elearning.backend.model.User;
+import com.elearning.backend.entity.User;
 import com.elearning.backend.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

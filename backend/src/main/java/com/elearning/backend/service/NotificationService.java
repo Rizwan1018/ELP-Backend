@@ -2,7 +2,7 @@ package com.elearning.backend.service;
 
 import com.elearning.backend.dto.NotificationDTO;
 import com.elearning.backend.mapper.NotificationMapper;
-import com.elearning.backend.model.Notification;
+import com.elearning.backend.entity.Notification;
 import com.elearning.backend.repository.NotificationRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;

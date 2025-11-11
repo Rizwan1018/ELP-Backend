@@ -1,7 +1,6 @@
 package com.elearning.backend.repository;
 
-import com.elearning.backend.dto.CourseDTO;
-import com.elearning.backend.model.Course;
+import com.elearning.backend.entity.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

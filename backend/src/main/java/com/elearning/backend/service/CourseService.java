@@ -2,8 +2,8 @@ package com.elearning.backend.service;
 
 import com.elearning.backend.dto.CourseDTO;
 import com.elearning.backend.exception.CourseNotFoundException;
-import com.elearning.backend.model.Course;
-import com.elearning.backend.model.Enrollment;
+import com.elearning.backend.entity.Course;
+import com.elearning.backend.entity.Enrollment;
 import com.elearning.backend.repository.CourseRepository;
 import com.elearning.backend.repository.EnrollmentRepository;
 import org.springframework.stereotype.Service;

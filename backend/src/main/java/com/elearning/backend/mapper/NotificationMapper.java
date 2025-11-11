@@ -1,7 +1,7 @@
 package com.elearning.backend.mapper;
 
 import com.elearning.backend.dto.NotificationDTO;
-import com.elearning.backend.model.Notification;
+import com.elearning.backend.entity.Notification;
 
 public class NotificationMapper {
     public static NotificationDTO toDto(Notification n) {

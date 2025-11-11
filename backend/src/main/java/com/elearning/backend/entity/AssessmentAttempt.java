@@ -1,5 +1,5 @@
 
-package com.elearning.backend.model;
+package com.elearning.backend.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
