@@ -6,6 +6,8 @@ import com.elearning.backend.entity.Course;
 import com.elearning.backend.entity.Enrollment;
 import com.elearning.backend.repository.CourseRepository;
 import com.elearning.backend.repository.EnrollmentRepository;
+import com.elearning.backend.repository.NotificationRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,11 +23,13 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
     private final EnrollmentRepository enrollmentRepository;
+    private final NotificationRepository notificationRepository;
 
-    public CourseService(CourseRepository courseRepository,EnrollmentRepository enrollmentRepository){
+    public CourseService(CourseRepository courseRepository,EnrollmentRepository enrollmentRepository, NotificationRepository notificationRepository){
 
         this.courseRepository = courseRepository;
         this.enrollmentRepository = enrollmentRepository;
+        this.notificationRepository = notificationRepository;
     }
 
     private CourseDTO convertToDTO(Course course){
@@ -104,19 +108,17 @@ public class CourseService {
                 .orElseThrow(() -> new CourseNotFoundException("Course not found with id: " + id));
     }
 
-    public void deleteCourse(Long id){
-       // courseRepository.deleteById(id);
-        List<Enrollment> enrollments = enrollmentRepository.findByCourseId(id);
-        if(!enrollments.isEmpty()){
-            enrollmentRepository.deleteAll(enrollments);
-
-            if(courseRepository.existsById(id)){
-                courseRepository.deleteById(id);
-            }else{
-                throw new CourseNotFoundException("Course not found with ID :" +id);
-            }
+    @Transactional
+    public void deleteCourse(Long courseId) {
+        if (!courseRepository.existsById(courseId)) {
+            throw new CourseNotFoundException("Course not found with ID: " + courseId);
         }
+        enrollmentRepository.deleteByCourseId(courseId);
+        courseRepository.deleteById(courseId);
+        notificationRepository.deleteCourseById(courseId);
+
     }
+
 
 
     public CourseDTO saveCourse(String title, String description, String domain, String level,Integer durationHrs, String tags, Long instructorId, MultipartFile thumbnail, MultipartFile video, MultipartFile prerequisite) throws Exception {

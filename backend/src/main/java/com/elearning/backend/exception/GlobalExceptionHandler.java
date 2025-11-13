@@ -33,9 +33,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 "Something went wrong!",
                 request.getRequestURI()
         );
-
-        ex.printStackTrace(); // ✅ logs error inside console
-
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
@@ -57,7 +54,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> userNotFound(
+    public ResponseEntity<ErrorResponse> handleUserNotFound(
             Exception ex, HttpServletRequest request) {
 
         ErrorResponse response = new ErrorResponse(
@@ -65,8 +62,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 "Something went wrong!",
                 request.getRequestURI()
         );
-
-        ex.printStackTrace();
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
@@ -82,6 +77,32 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleEmailAlreadyExists(
+            EmailAlreadyExistsException ex, HttpServletRequest request) {
+
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidPassword(
+            InvalidPasswordException ex, HttpServletRequest request) {
+
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(PaymentFailedException.class)

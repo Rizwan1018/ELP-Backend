@@ -2,6 +2,8 @@ package com.elearning.backend.service;
 
 import com.elearning.backend.dto.AuthDTO.*;
 import com.elearning.backend.entity.*;
+import com.elearning.backend.exception.EmailAlreadyExistsException;
+import com.elearning.backend.exception.InvalidPasswordException;
 import com.elearning.backend.exception.UserNotFoundException;
 import com.elearning.backend.repository.*;
 import com.elearning.backend.security.JwtService;
@@ -9,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -35,7 +38,7 @@ public class AuthService {
 
     public AuthResponse signup(SignupRequest request) {
         if (userRepo.existsByEmail(request.email())) {
-            throw new RuntimeException("Email already exists");
+            throw new EmailAlreadyExistsException("Email already exists");
         }
         log.info("Full name"+ request.fullName());
 
@@ -70,7 +73,7 @@ public class AuthService {
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new InvalidPasswordException("Invalid password");
         }
 
         String token = jwtService.generateToken(user.getEmail(), Map.of("role", user.getRole().name()));

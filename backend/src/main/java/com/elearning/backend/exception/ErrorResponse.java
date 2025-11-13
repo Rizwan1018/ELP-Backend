@@ -21,7 +21,6 @@ public class ErrorResponse {
         this.path = path;
     }
 
-    // ✅ getters only (immutable response)
     public LocalDateTime getTimestamp() { return timestamp; }
     public int getStatus() { return status; }
     public String getError() { return error; }
