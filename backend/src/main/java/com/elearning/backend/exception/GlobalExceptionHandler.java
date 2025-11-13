@@ -1,6 +1,7 @@
 package com.elearning.backend.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -38,6 +39,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
+    @ExceptionHandler(ClientAbortException.class)
+    public void handleClientAbortException(ClientAbortException ex) {
+    }
+
     @ExceptionHandler(CourseNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleCourseNotFound(
             CourseNotFoundException ex, HttpServletRequest request) {
@@ -47,6 +52,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 ex.getMessage(),
                 request.getRequestURI()
         );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> userNotFound(
+            Exception ex, HttpServletRequest request) {
+
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.NOT_FOUND,
+                "Something went wrong!",
+                request.getRequestURI()
+        );
+
+        ex.printStackTrace();
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }

@@ -46,8 +46,7 @@ public class JwtService {
     }
 
     private Key getSignInKey() {
-        // byte[] keyBytes = Decoders.BASE64.decode(secret);
-        // Use raw secret bytes (UTF-8). This avoids requiring base64 encoding in your properties.
+
         byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
 
         return Keys.hmacShaKeyFor(keyBytes);

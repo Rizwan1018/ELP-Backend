@@ -59,15 +59,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/payments/**").hasAnyRole("STUDENT", "INSTRUCTOR")
                         .requestMatchers("/api/test/student").hasRole("STUDENT")
 
-                       .requestMatchers("/api/courses/**").hasAnyRole("INSTRUCTOR", "STUDENT")
+                        .requestMatchers("/api/courses/**").hasAnyRole("INSTRUCTOR", "STUDENT")
 
                         .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/assessment-attempts").hasRole("STUDENT")
                         .requestMatchers(org.springframework.http.HttpMethod.GET,  "/api/assessment-attempts").hasRole("STUDENT")
                         .requestMatchers(org.springframework.http.HttpMethod.GET,  "/api/assessment-attempts/by-assessment/**").hasRole("INSTRUCTOR")
 
-
-                        //    .requestMatchers("/api/courses/**").permitAll()
-                    //    .requestMatchers("/api/courses/**").hasAnyRole("INSTRUCTOR", "STUDENT")
                         .anyRequest().authenticated()
 
                 )

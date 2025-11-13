@@ -2,7 +2,9 @@ package com.elearning.backend.EnrollementTest;
 
 import com.elearning.backend.dto.EnrollmentDTO;
 import com.elearning.backend.entity.Enrollment;
+import com.elearning.backend.repository.CourseRepository;
 import com.elearning.backend.repository.EnrollmentRepository;
+import com.elearning.backend.repository.NotificationRepository;
 import com.elearning.backend.service.EnrollmentService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,6 +26,16 @@ class EnrollmentServiceTest {
 
     @Mock
     private EnrollmentRepository enrollmentRepository;
+
+    @Mock
+    private CourseRepository courseRepository;
+
+    // EnrollmentServiceTest.java
+
+    // 1. Declare the new dependency as a Mock
+    @Mock
+    private NotificationRepository notificationRepository;
+
 
     @InjectMocks
     private EnrollmentService enrollmentService;
