@@ -24,7 +24,6 @@ public class Assessment {
     @OneToMany(mappedBy = "assessment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Question> questions = new ArrayList<>();
 
-    // getters/setters
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

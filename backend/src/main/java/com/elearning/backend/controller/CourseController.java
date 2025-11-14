@@ -39,6 +39,7 @@ public class CourseController {
             @RequestParam("durationHrs") Integer durationHrs,
             @RequestParam("tags") String tags,
             @RequestParam("instructorId") Long instructorId,
+
             @RequestParam(value = "thumbnail", required = false)MultipartFile thumbnail,
             @RequestParam(value = "video", required = false)MultipartFile video,
             @RequestParam(value = "prerequisite", required = false)MultipartFile prerequisite ) throws Exception {

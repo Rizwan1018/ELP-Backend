@@ -30,13 +30,13 @@ public class EnrollmentService {
     public EnrollmentService(EnrollmentRepository enrollmentRepository,
                              NotificationRepository notificationRepository,
                              CourseRepository courseRepository,
-                             StudentRepository studentRepository,      // NEW
-                             EmailService emailService) {              // NEW
+                             StudentRepository studentRepository,
+                             EmailService emailService) {
         this.enrollmentRepository = enrollmentRepository;
         this.notificationRepository = notificationRepository;
         this.courseRepository = courseRepository;
-        this.studentRepository = studentRepository;   // NEW
-        this.emailService = emailService;             // NEW
+        this.studentRepository = studentRepository;
+        this.emailService = emailService;
     }
 
 

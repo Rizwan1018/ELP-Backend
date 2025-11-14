@@ -38,16 +38,15 @@ public class AnnouncementService {
         a.setCreatedAt(Instant.now());
         Announcement saved = announcementRepo.save(a);
 
-        // fan-out: notify all enrolled students for this course
         List<Enrollment> enrollments = enrollmentRepo.findByCourseId(dto.courseId);
         for (Enrollment en : enrollments) {
             Notification n = new Notification();
             n.setUserId(en.getStudentId());
-            n.setType("announcement");               // keep consistent with FE
+            n.setType("announcement");
             n.setMessage("[" + courseTitleForMsg + "] " + dto.title + ": " + dto.message);
             n.setCourseId(dto.courseId);
             n.setCreatedAt(Instant.now());
-            n.setRead(false);                       // IMPORTANT: use a non-reserved column
+            n.setRead(false);
             notificationRepo.save(n);
         }
 

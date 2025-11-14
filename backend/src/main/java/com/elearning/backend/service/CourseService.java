@@ -46,7 +46,6 @@ public class CourseService {
         dto.setVideoUrl(course.getVideoUrl());
         dto.setPreRequisite(course.getPreRequisite());
 
-        // new: set avgRating & studentsCount from enrollment repo
         Double avg = enrollmentRepository.findAverageRatingByCourseId(course.getId());
         dto.setAvgRating(avg != null ? Math.round(avg * 10.0) / 10.0 : null); // rounded to 1 decimal
         Long count = enrollmentRepository.countByCourseId(course.getId());

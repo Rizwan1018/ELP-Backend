@@ -17,12 +17,10 @@ public class AssessmentAttempt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // The assessment attempted
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "assessment_id", nullable = false)
     private Assessment assessment;
 
-    // We use User/Student ID (from JWT email -> UserRepo)
     @Column(name = "student_id", nullable = false)
     private Long studentId;
 
@@ -35,14 +33,12 @@ public class AssessmentAttempt {
     @Column(name = "attempted_at", nullable = false)
     private Instant attemptedAt;
 
-    // Answers: questionId -> selected option index
     @ElementCollection
     @CollectionTable(name = "attempt_answers", joinColumns = @JoinColumn(name = "attempt_id"))
     @MapKeyColumn(name = "question_id")
     @Column(name = "selected_index", nullable = false)
     private Map<Long, Integer> answers = new HashMap<>();
 
-    // getters & setters
     public Long getId() { return id; }
 
     public Assessment getAssessment() { return assessment; }

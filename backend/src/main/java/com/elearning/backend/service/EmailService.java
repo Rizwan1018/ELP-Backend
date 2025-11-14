@@ -20,12 +20,9 @@ public class EmailService {
             msg.setTo(to);
             msg.setSubject(subject);
             msg.setText(body);
-            // optional: setFrom should match spring.mail.username for some providers
-            // msg.setFrom("youremail@gmail.com");
             mailSender.send(msg);
             System.out.println("Email sent to " + to);
         } catch (Exception e) {
-            // don't fail enrollment if email fails
             System.err.println("Email send failed: " + e.getMessage());
         }
     }

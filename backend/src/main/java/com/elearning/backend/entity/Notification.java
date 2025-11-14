@@ -22,7 +22,6 @@ public class Notification {
     @Column(nullable = false, length = 1000)
     private String message;
 
-    // ✅ rename column to avoid reserved keyword
     @Column(name = "is_read", nullable = false, columnDefinition = "bit(1) default 0")
     private Boolean read = false;
 

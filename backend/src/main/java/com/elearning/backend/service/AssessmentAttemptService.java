@@ -48,7 +48,6 @@ public class AssessmentAttemptService {
         Assessment assessment = assessmentRepo.findById(req.getAssessmentId())
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Assessment not found: " + req.getAssessmentId()));
 
-        // Build lookup of questions by id
         List<Question> questions = assessment.getQuestions();
         Map<Long, Question> qById = questions.stream()
                 .collect(Collectors.toMap(Question::getId, q -> q));
@@ -61,9 +60,9 @@ public class AssessmentAttemptService {
             Long qid = e.getKey();
             Integer selected = e.getValue();
             Question q = qById.get(qid);
-            if (q == null) continue; // ignore answers for questions not in this assessment
+            if (q == null) continue;
             if (selected == null) continue;
-            if (selected < 0 || selected >= q.getOptions().size()) continue; // invalid index -> ignore
+            if (selected < 0 || selected >= q.getOptions().size()) continue;
 
             cleanedAnswers.put(qid, selected);
             if (selected.equals(q.getCorrectAnswer())) {
